@@ -1238,6 +1238,7 @@ A nice collection of day-to-day Perl scripts.
     * [Triangle interior angles](./Math/triangle_interior_angles.pl)
     * [Tribonacci primality test](./Math/tribonacci_primality_test.pl)
     * [Trip2mars](./Math/trip2mars.pl)
+    * [Unique permutations](./Math/unique_permutations.pl)
     * [Unitary divisors](./Math/unitary_divisors.pl)
     * [Unitary divisors fast](./Math/unitary_divisors_fast.pl)
     * [Unitary squarefree divisors](./Math/unitary_squarefree_divisors.pl)

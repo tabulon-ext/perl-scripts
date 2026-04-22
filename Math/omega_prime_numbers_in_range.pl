@@ -13,6 +13,9 @@
 #   https://en.wikipedia.org/wiki/Almost_prime
 #   https://en.wikipedia.org/wiki/Prime_omega_function
 
+# PARI/GP code:
+#   omega_numbers(A, B, n) = A=max(A, vecprod(primes(n))); local(f); (f = (m, p, j) -> my(list=List()); forprime(q=p, sqrtnint(B\m, j), my(v=m*q); while(v <= B, if(j==1, if(v>=A, listput(list, v)), if(v*(q+1) <= B, list=concat(list, f(v, q+1, j-1)))); v *= q)); list); vecsort(Vec(f(1, 2, n)));
+
 use 5.020;
 use ntheory qw(:all);
 use experimental qw(signatures);
