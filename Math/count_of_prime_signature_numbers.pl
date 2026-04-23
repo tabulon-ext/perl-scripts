@@ -4,7 +4,7 @@
 # Date: 22 April 2026
 # https://github.com/trizen
 
-# Count the number of k-omega prime numbers <= n that have a given prime signature.
+# Count the number of k-omega numbers <= n that have a given prime signature.
 
 # See also:
 #   https://en.wikipedia.org/wiki/Almost_prime

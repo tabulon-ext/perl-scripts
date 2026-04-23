@@ -4,7 +4,7 @@
 # Date: 22 April 2026
 # https://github.com/trizen
 
-# Generate all the k-omega prime numbers <= n that have a given prime signature.
+# Generate all the k-omega numbers in range [A,B] that have a given prime signature.
 
 # See also:
 #   https://en.wikipedia.org/wiki/Almost_prime
