@@ -30,16 +30,35 @@ sub count_prime_signature_numbers($n, $prime_signature) {
         my $e  = $P->[$k - 1];
         my $hi = rootint(divint($n, $m), ($k > $e ? $k : $e));
 
+        # Base case for k = 1 (handles initial k=1 inputs)
         if ($k == 1) {
             $count += prime_count($hi) - $j;
             return;
         }
 
-        foreach my $p (@{primes($lo, $hi)}) {
-            my $t = mulint($m, powint($p, $e));
-            my $u = rootint(divint($n, $t), $P->[$k - 2]);
-            last if ($p + 1 > $u);
-            __SUB__->($t, $p + 1, $k - 1, $P, ++$j);
+        # Intercept recursion at k = 2 for performance
+        if ($k == 2) {
+            my $e2 = $P->[0];
+            for (my $p = $lo ; $p <= $hi ;) {
+                my $r = next_prime($p);
+                my $t = mulint($m, powint($p, $e));
+                my $u = rootint(divint($n, $t), $e2);
+                last if ($r > $u);
+                $count += prime_count($u) - ++$j;
+                $p = $r;
+            }
+            return;
+        }
+
+        # General recursive case for k > 2
+        for (my $p = $lo ; $p <= $hi ;) {
+            my $r  = next_prime($p);
+            my $t  = mulint($m, powint($p, $e));
+            my $e2 = $P->[$k - 1];
+            my $u  = rootint(divint($n, $t), ($k - 1 > $e2 ? $k - 1 : $e2));
+            last if ($r > $u);
+            __SUB__->($t, $r, $k - 1, $P, ++$j);
+            $p = $r;
         }
     };
 
