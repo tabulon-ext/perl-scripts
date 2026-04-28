@@ -24,43 +24,35 @@ sub count_prime_signature_numbers($n, $prime_signature) {
 
         my $e = $P->[$k - 1];
 
-        # Aggressive Math Pruning: Sum of all remaining exponents
-        my $sum_e = 0;
-        $sum_e += $_ for @{$P}[0 .. $k - 1];
+        # Sum all remaining exponents for a tight upper bound
+        my $sum_e = vecsum(@{$P}[0 .. $k - 1]);
 
         my $hi = rootint(divint($n, $m), $sum_e);
+
+        if ($lo > $hi) {
+            return;
+        }
 
         if ($k == 1) {
             $count += prime_count($hi) - $j;
             return;
         }
 
-        my $primes = primes($lo, $hi);
-        my $e2     = $P->[$k - 2];
-
         if ($k == 2) {
-            foreach my $p (@$primes) {
+            my $e2 = $P->[0];
+            foreach my $p (@{primes($lo, $hi)}) {
                 my $t = mulint($m, powint($p, $e));
                 my $u = rootint(divint($n, $t), $e2);
-
-                # If current prime >= limit for next prime, break.
-                last if ($p >= $u);
-
                 $count += prime_count($u) - ++$j;
             }
             return;
         }
 
-        # General recursive case for k > 2
-        my $sum_e_next = $sum_e - $e;
-
-        foreach my $p (@$primes) {
+        for(my $p = $lo; $p <= $hi; ) {
             my $t = mulint($m, powint($p, $e));
-            my $u = rootint(divint($n, $t), $sum_e_next);
-
-            last if ($p >= $u);
-
-            __SUB__->($t, $p + 1, $k - 1, $P, ++$j);
+            my $r = next_prime($p);
+            __SUB__->($t, $r, $k - 1, $P, ++$j);
+            $p = $r;
         }
     };
 

@@ -30,11 +30,14 @@ sub prime_signature_numbers_in_range($A, $B, $prime_signature) {
 
         my $e = $P->[$k - 1];
 
-        # AGGRESSIVE: Sum all remaining exponents for a tight upper bound
-        my $sum_e = 0;
-        $sum_e += $_ for @{$P}[0 .. $k - 1];
+        # Sum all remaining exponents for a tight upper bound
+        my $sum_e = vecsum(@{$P}[0 .. $k - 1]);
 
         my $hi = rootint(divint($B, $m), $sum_e);
+
+        if ($lo > $hi) {
+            return;
+        }
 
         # Base case
         if ($k == 1) {
@@ -42,26 +45,18 @@ sub prime_signature_numbers_in_range($A, $B, $prime_signature) {
             # Tighten the lower bound based on A
             my $lo_tight = vecmax($lo, rootint_ceil(cdivint($A, $m), $e));
 
-            if ($lo_tight <= $hi) {
-                foreach my $p (@{primes($lo_tight, $hi)}) {
-                    push @list, mulint($m, powint($p, $e));
-                }
+            foreach my $p (@{primes($lo_tight, $hi)}) {
+                push @list, mulint($m, powint($p, $e));
             }
+
             return;
         }
 
-        # Recursive case
-        my $sum_e_next = $sum_e - $e;
-        foreach my $p (@{primes($lo, $hi)}) {
+        for (my $p = $lo; $p <= $hi; ) {
             my $t = mulint($m, powint($p, $e));
-
-            # TIGHT LOOKAHEAD: Calculate max possible value for the next prime
-            my $u = rootint(divint($B, $t), $sum_e_next);
-
-            # Since p_next must be > p, we stop if p is already too large
-            last if ($p >= $u);
-
-            __SUB__->($t, $p + 1, $k - 1, $P);
+            my $r = next_prime($p);
+            __SUB__->($t, $r, $k - 1, $P);
+            $p = $r;
         }
     };
 
