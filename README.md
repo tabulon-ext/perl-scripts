@@ -302,6 +302,7 @@ A nice collection of day-to-day Perl scripts.
     * [RSA encryption](./Encryption/RSA_encryption.pl)
     * [Simple XOR cipher](./Encryption/simple_XOR_cipher.pl)
 * File Readers
+    * [Concat files](./File%20Readers/concat_files.pl)
     * [Ldump](./File%20Readers/ldump)
     * [Multi-file-line-reader](./File%20Readers/multi-file-line-reader.pl)
     * [N repeated lines](./File%20Readers/n_repeated_lines.pl)
